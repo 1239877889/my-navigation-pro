@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>我的导航页 Pro</title>
+        <link rel="stylesheet" href="style.css?v=1.0">
+        <!-- 引入图标库 (示例: Font Awesome) -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <script>
+            // 添加一个简单的测试来确认脚本执行
+            console.log('Head脚本已加载');
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <aside class="sidebar">
+                <h2>
+                    <i class="fas fa-folder"></i>
+                    文件夹
+                </h2>
+                <input type="search" id="search-box" placeholder="搜索...">
+                <ul id="folder-list">
+                <!-- JS 会动态填充这里 -->
+                </ul>
+            </aside>
+            <!-- 新增：侧边栏拖动条 -->
+            <div id="sidebar-resizer"></div>
+            <main class="content">
+                <h2 id="current-folder-title">书签</h2>
+                <div id="bookmarks-grid">
+                <!-- JS 会动态填充这里 -->
+                </div>
+            </main>
+        </div>
+        <!-- 原始书签数据 (隐藏，供JS解析) -->
+        <div id="raw-bookmarks" style="display: none;">
+            <!-- **** 粘贴你导出的 <DL>...</DL> 代码块 **** -->
+            <!-- <DL><p>
+            <DT><H3 ADD_DATE="1683447241" LAST_MODIFIED="1734677527" PERSONAL_TOOLBAR_FOLDER="true">书签栏</H3>
+            <DL><p>
+                <DT><A HREF="https://www.example.com">测试链接</A>
+                <DT><H3 ADD_DATE="1683447241" LAST_MODIFIED="1734677527" PERSONAL_TOOLBAR_FOLDER="true">书签栏</H3>
+                    <DL><p>
+                        <DT><A HREF="https://www.example.com">测试链接2</A>
+                    </DL><p>
+                        <DT><A HREF="https://www.example.com">测试链接3</A>
+            </DL><p>
+                <DT><A HREF="https://www.example.com">测试链接4</A>
+        </DL><p> -->
+            <DL><p>
+                <DT><H3>Export</H3>
+                <DL><p>
+                    <DT><A HREF="https://aistudio.google.com/prompts/new_chat" ADD_DATE="1739688043" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://rdl.ink/render/https%3A%2F%2Faistudio.google.com%2Fprompts%2Fnew_chat" DATA-IMPORTANT="false">Google AI Studio</A>
+                    <DT><A HREF="https://chat.deepseek.com" ADD_DATE="1737975593" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://chat.deepseek.com/deepseek-chat.jpeg" DATA-IMPORTANT="false">DeepSeek</A>
+                    <DT><A HREF="https://claude.ai/chats" ADD_DATE="1689246249" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://claude.ai/images/claude_ogimage.png" DATA-IMPORTANT="false">Claude</A>
+                    <DT><A HREF="https://chat.openai.com" ADD_DATE="1683441023" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://cdn.oaistatic.com/assets/chatgpt-share-og-u7j5uyao.webp" DATA-IMPORTANT="false">New chat</A>
+                    <DT><A HREF="https://www.bing.com/search?OCID=MY0291&form=MY0291&q=Bing+AI&showconv=1" ADD_DATE="1683397682" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://rdl.ink/render/https%3A%2F%2Fwww.bing.com%2Fsearch%3FOCID%3DMY0291%26form%3DMY0291%26q%3DBing%2BAI%26showconv%3D1" DATA-IMPORTANT="false">Bing AI - Search</A>
+                    <DT><A HREF="https://www.perplexity.ai/?login-source=loginButton" ADD_DATE="1730125529" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png" DATA-IMPORTANT="false">Perplexity</A>
+                    <DT><A HREF="https://gemini.google.com/app" ADD_DATE="1739687775" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://www.gstatic.com/lamda/images/gemini_thumbnail_c362e5eadc46ca9f617e2.png" DATA-IMPORTANT="false">Gemini</A>
+                    <DT><A HREF="https://copilot.microsoft.com/chats/hgZ1cDZnDpLjBXfKrpipm" ADD_DATE="1741074272" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://studiostaticassetsprod.azureedge.net/bundle-cmc/images/meta-image.jpg" DATA-IMPORTANT="false">Microsoft Copilot: Your AI companion</A>
+                    <DT><A HREF="https://grok.com" ADD_DATE="1741074451" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://grok.com/opengraph-image.png?436301709c39b1b6" DATA-IMPORTANT="false">Grok</A>
+                    <DT><A HREF="https://zhida.zhihu.com/search/3651712386804535789?zhida_source=entity" ADD_DATE="1741272168" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://rdl.ink/render/https%3A%2F%2Fzhida.zhihu.com%2Fsearch%2F3651712386804535789%3Fzhida_source%3Dentity" DATA-IMPORTANT="false">Vertex AI - 知乎直答</A>
+                    <DT><A HREF="https://llmworld.net:5188" ADD_DATE="1739105271" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="" DATA-IMPORTANT="false">澎峰科技</A>
+                    <DT><A HREF="https://chat.zju.edu.cn" ADD_DATE="1739966581" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="" DATA-IMPORTANT="false">大先生</A>
+                    <DT><A HREF="https://auth0.openai.com/u/login/password?state=hKFo2SB0WHZ2alBTZEUwQnFkVGRRcDkyUGVmRWpEUjBPcUswV6Fur3VuaXZlcnNhbC1sb2dpbqN0aWTZIHUzLTBaMGpZZnJFMDVpUXlfWUxpa204U3VPMEhHVkxGo2NpZNkgRFJpdnNubTJNdTQyVDNLT3BxZHR3QjNOWXZpSFl6d0Q" ADD_DATE="1734677527" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="" DATA-IMPORTANT="false">openai platform</A>
+                    <DT><A HREF="https://www.scopus.com/search/form.uri?display=basic#scopus-ai" ADD_DATE="1738135514" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://rdl.ink/render/https%3A%2F%2Fwww.scopus.com%2Fsearch%2Fform.uri%3Fdisplay%3Dbasic%23scopus-ai" DATA-IMPORTANT="false">Scopus - Document search</A>
+                    <DT><A HREF="https://typeset.io" ADD_DATE="1736492091" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://scispace.com/vs/meta-images/home-page.jpg" DATA-IMPORTANT="false">AI Chat for scientific PDFs | SciSpace</A>
+                    <DT><A HREF="https://consensus.app/?home=true" ADD_DATE="1732151898" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://consensus.app/home/wp-content/uploads/2024/05/Pricing.jpg" DATA-IMPORTANT="false">Consensus</A>
+                    <DT><A HREF="https://storm.genie.stanford.edu/my-library" ADD_DATE="1735180978" LAST_MODIFIED="1743159798" TAGS="" DATA-COVER="https://rdl.ink/render/https%3A%2F%2Fstorm.genie.stanford.edu%2Fmy-library" DATA-IMPORTANT="false">My Library</A>
+                </DL><p>
+            </DL><p>
+        </div>
+        <script>
+            // 添加一个简单的测试来确认内联脚本执行
+            console.log('内联脚本已加载');
+        </script>
+        <script src="script.js"></script>
+    </body>
+</html>

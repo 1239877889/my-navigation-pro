@@ -1,0 +1,308 @@
+/* --- START OF FILE style.css --- */
+
+:root {
+    --indent-width: 20px;  /* Controls the amount of indent per level */
+    --line-thickness: 1px;   /* Thickness of the tree lines */
+    --line-color: #e0e0e0; /* Color of the tree lines */
+}
+
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+}
+.container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+.sidebar { width: 250px; background: #f0f0f0; padding: 15px; height: 100vh; overflow-y: auto; }
+.sidebar h2 { margin-top: 0; }
+.sidebar #search-box { width: 100%; box-sizing: border-box; margin-bottom: 10px; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+#folder-list { list-style: none; padding: 0; margin: 0; }
+#folder-list li { padding: 8px 10px; cursor: pointer; border-radius: 4px; margin-bottom: 5px; }
+#folder-list li:hover { background-color: #e0e0e0; }
+#folder-list li.active { background-color: #4a90e2; color: white; font-weight: bold; }
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    overflow-y: auto;
+    height: 100vh;
+    background: #fff;
+}
+
+#bookmarks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+    min-height: 100px;
+    position: relative;
+}
+
+/* 确保链接卡片完整显示 */
+.bookmark-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: all 0.2s ease;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.bookmark-card a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.bookmark-favicon {
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.bookmark-title {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.bookmark-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+.bookmark-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+}
+.bookmark-card:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+.bookmark-card a { text-decoration: none; color: #333; display: flex; align-items: center; }
+.bookmark-favicon { width: 20px; height: 20px; margin-right: 8px; vertical-align: middle; }
+.bookmark-title { font-size: 0.9em; word-break: break-all; } /* 防止长标题溢出 */
+
+/* 隐藏非当前文件夹的书签 */
+.bookmark-card.hidden { display: none; }
+
+/* 响应式 (示例) */
+@media (max-width: 768px) {
+    .container { flex-direction: column; }
+    .sidebar { width: 100%; height: auto; position: static; /* 或者做成抽屉菜单 */ }
+    .content { height: auto; }
+    #bookmarks-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+}
+
+/* --- 新增样式：美化文件夹列表 --- */
+
+/* 文件夹图标样式 */
+.folder-icon {
+    margin-right: 6px;  /* 图标和文字之间的间距 */
+    color: #6c757d;     /* 图标颜色 (中灰色) */
+    width: 1.1em;       /* 给图标一点固定宽度 */
+    display: inline-block; /* 确保图标正确对齐 */
+    text-align: center;
+    vertical-align: middle; /* Align icon better with text */
+}
+
+/* 选中状态下的图标颜色 */
+#folder-list li.active .folder-icon {
+    color: #1e88e5; /* Match active text color */
+}
+/* Keep default icon color for parent-highlight */
+#folder-list li.parent-highlight .folder-icon {
+    color: #757575;
+}
+
+
+/* 调整列表项内边距和布局 */
+#folder-list li {
+    /* Remove direct padding, control via wrapper */
+    padding: 0;
+    padding-right: 10px; /* Keep right padding */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+    color: #333;
+    margin-bottom: 0; /* Remove bottom margin, use UL margin */
+}
+
+/* Folder content wrapper for flex layout */
+.folder-content-wrapper {
+    display: flex;
+    align-items: center;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* Calculate padding-left based on level for content */
+    padding-left: calc(var(--indent-width) * var(--indent-level));
+}
+
+/* Nested list styling */
+ul.nested-list {
+    list-style: none;
+    padding: 0;
+    margin: 0; /* Remove default UL margin */
+}
+
+/* Collapsed state */
+ul.nested-list.collapsed {
+    display: none;
+}
+
+/* Toggle icon styling */
+.toggle-icon, .toggle-icon-placeholder {
+    display: inline-block;
+    width: 16px; /* Fixed width for alignment */
+    text-align: center;
+    margin-right: 4px; /* Space before folder icon */
+    cursor: pointer;
+    user-select: none; /* Prevent text selection */
+    color: #6c757d;
+    font-size: 0.8em; /* Make icon slightly smaller */
+}
+.toggle-icon-placeholder {
+    cursor: default; /* No pointer for placeholder */
+}
+
+
+/* --- 移除旧颜色方案，使用默认背景 --- */
+/* #folder-list li.folder-item { ... } */
+/* #folder-list li.folder-item.is-top-level { ... } */
+
+/* 悬停状态 - Apply to the wrapper */
+#folder-list li .folder-content-wrapper:hover {
+     background-color: #e9e9e9; /* 非常浅的灰色 */
+}
+/* Exclude "All Bookmarks" from hover */
+#folder-list > li:first-child:hover {
+    background-color: transparent;
+}
+
+
+/* 新的选中状态 - Apply to the wrapper */
+#folder-list li:not([data-folder-id="all"]):hover { /* Exclude "All Bookmarks" */
+     background-color: #e9e9e9; /* 非常浅的灰色 */
+}
+
+/* 新的选中状态 */
+#folder-list li.active > .folder-content-wrapper {
+    background-color: #e3f2fd; /* 淡蓝色 */
+    color: #1e88e5; /* 蓝色文字 */
+    font-weight: 600; /* Slightly bolder */
+}
+/* Ensure active styles apply correctly */
+#folder-list li.active > .folder-content-wrapper .folder-icon,
+#folder-list li.active > .folder-content-wrapper .toggle-icon {
+    color: #1e88e5; /* 蓝色图标 */
+}
+
+/* 默认图标颜色 */
+/* #folder-list li .folder-icon { ... } */ /* Already set above */
+
+/* --- 父级渐变高亮 - Apply to the wrapper --- */
+#folder-list li.parent-highlight > .folder-content-wrapper {
+    /* 淡蓝色基色: hsl(207, 90%, 90%) */
+    background-color: hsla(207, 90%, 90%, max(0.1, calc(0.9 - var(--parent-depth, 0) * 0.2)));
+    color: #333;
+    transition: background-color 0.2s ease;
+}
+/* Keep icon color default for parent highlight */
+#folder-list li.parent-highlight > .folder-content-wrapper .folder-icon,
+#folder-list li.parent-highlight > .folder-content-wrapper .toggle-icon {
+    color: #757575;
+}
+
+/* Ensure active state overrides parent highlight on the wrapper */
+#folder-list li.active > .folder-content-wrapper {
+    background-color: #e3f2fd !important; /* Use important to override hsla */
+    color: #1e88e5 !important;
+    font-weight: 600 !important;
+}
+
+
+/* --- 调整树状连接线 (适配嵌套结构) --- */
+
+/* Base style for list items involved in the tree */
+#folder-list ul li.folder-item {
+    position: relative; /* Needed for absolute positioning of lines */
+}
+
+/* Vertical line connecting siblings */
+#folder-list ul li.folder-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    /* Position based on the LI's parent UL's level + specific offset */
+    left: calc(var(--indent-width) * (var(--indent-level) - 1) + 8px); /* Indent based on level, plus offset to align near toggle */
+    width: var(--line-thickness);
+    background-color: var(--line-color);
+    z-index: -1; /* Send behind content */
+}
+
+/* Horizontal line connecting to the item */
+#folder-list ul li.folder-item::after {
+    content: "";
+    position: absolute;
+    /* Vertically align with the middle of the folder text/icon */
+    top: 15px; /* Adjust this value if your text/icon height changes significantly */
+    height: var(--line-thickness);
+    /* Start from the vertical line */
+    left: calc(var(--indent-width) * (var(--indent-level) - 1) + 8px);
+    /* Extend to just before the toggle icon/placeholder */
+    width: calc(var(--indent-width) - 8px); /* Width is roughly one indent level minus the offset */
+    background-color: var(--line-color);
+    z-index: -1; /* Send behind content */
+}
+
+/* Stop the vertical line for the last child in a list */
+#folder-list ul li.folder-item.is-last-child::before {
+    height: 15px; /* Stop at the horizontal line's height */
+}
+
+/* --- Hide lines for top-level items (direct children of #folder-list) --- */
+/* The direct UL under #folder-list doesn't need lines coming from #folder-list itself */
+/* Target direct LI children of the FIRST UL under #folder-list */
+#folder-list > ul > li.folder-item::before,
+#folder-list > ul > li.folder-item::after {
+    display: none;
+}
+
+/* Exception: If a top-level item HAS children and thus a nested UL, its *children* need lines */
+/* Re-enable lines for items inside nested lists, even if the parent is top-level */
+#folder-list ul ul li.folder-item::before,
+#folder-list ul ul li.folder-item::after {
+   display: block; /* Explicitly re-enable */
+}
+
+/* Special case adjustment for the very first level of nesting (children of top-level items) */
+/* Their lines need to start further left */
+#folder-list > ul > li.folder-item > ul > li.folder-item::before,
+#folder-list > ul > li.folder-item > ul > li.folder-item::after {
+     left: calc(var(--indent-width) * (var(--indent-level) - 1) + 8px);
+     /* The general rule might actually work correctly here due to --indent-level starting at 1 or 2 */
+}
+#folder-list > ul > li.folder-item > ul > li.folder-item::after {
+     width: calc(var(--indent-width) - 8px);
+}
+
+/* Ensure "All Bookmarks" doesn't get lines */
+#folder-list > li:first-child::before,
+#folder-list > li:first-child::after {
+    display: none;
+}
